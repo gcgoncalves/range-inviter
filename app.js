@@ -24,6 +24,27 @@ function validateCustomer(customer) {
     return true;
 }
 
+function binaryInsert(customer, customerList) {
+    const newCustomerList = _.clone(customerList);
+    let begin = 0,
+        end = newCustomerList.length,
+        middle = Math.floor((begin + end)/2);
+    if (newCustomerList.length) {
+        while (begin < end) {
+            if (customer.user_id >= newCustomerList[middle].user_id) {
+                begin = middle + 1
+            } else {
+                end = middle
+            }
+            middle = Math.floor((begin + end)/2);
+        }
+        newCustomerList.splice(middle, 0, customer);
+        return newCustomerList;
+    } else {
+        return [customer]
+    }
+}
+
 function processLine(line, lineNumber) {
     const dublinOffice = {
         latitude: 53.339428,
@@ -44,18 +65,17 @@ function processLine(line, lineNumber) {
 }
 
 function processFile(stream) {
-    const closeCustomers = [];
-    let lineNumber = 1;
+    let closeCustomers = [],
+        lineNumber = 1;
 
     stream.on('line', (line) => {
         const customer = processLine(line, lineNumber);
         if (customer) {
-            closeCustomers.push(customer);
+            closeCustomers = binaryInsert(customer, closeCustomers);
         }
         lineNumber = lineNumber + 1;
     }).on('close', () => {
-        let sortedCustomers = _.sortBy(closeCustomers, [(customer) => +customer.user_id]);
-        _.forEach(sortedCustomers, (customer) => {
+        _.forEach(closeCustomers, (customer) => {
             console.log(`Name: ${customer.name}, User ID: ${customer.user_id}`);
         });
     });
@@ -76,5 +96,6 @@ if (typeof require != 'undefined' && require.main == module) {
 
 module.exports = {
     validateCustomer,
+    binaryInsert,
     processLine
 }

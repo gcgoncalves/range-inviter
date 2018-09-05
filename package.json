@@ -9,7 +9,7 @@
     "prestart": "npm install",
     "start": "node app.js",
     "pretest": "npm install",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "devDependencies": {
     "jest": "23.5.0"

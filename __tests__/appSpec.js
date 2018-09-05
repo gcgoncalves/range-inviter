@@ -33,6 +33,133 @@ describe('validateUser', () => {
     });
 });
 
+describe('binaryInsert', () => {
+    test('Empty array', () => {
+        const customer = {
+                name: 'John Doe',
+                user_id: 1,
+                latitude: '1',
+                longitude: '1'
+            },
+            customerList = [],
+            expected = [customer];
+        let result = app.binaryInsert(customer, customerList);
+        expect(result).toEqual(expected);
+    });
+
+    test('Insert in the beginning', () => {
+        const customer1 = {
+                name: 'John Doe',
+                user_id: 1,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer2 = {
+                name: 'Jane Doe',
+                user_id: 2,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer3 = {
+                name: 'Gabriel Costa',
+                user_id: 3,
+                latitude: '1',
+                longitude: '1'
+            },
+            customerList = [customer2, customer3],
+            expected = [customer1, customer2, customer3];
+        let result = app.binaryInsert(customer1, customerList);
+        expect(result).toEqual(expected);
+    });
+
+    test('Insert in the middle', () => {
+        const customer1 = {
+                name: 'John Doe',
+                user_id: 1,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer2 = {
+                name: 'Jane Doe',
+                user_id: 2,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer3 = {
+                name: 'Gabriel Costa',
+                user_id: 3,
+                latitude: '1',
+                longitude: '1'
+            },
+            customerList = [customer1, customer3],
+            expected = [customer1, customer2, customer3];
+        let result = app.binaryInsert(customer2, customerList);
+        expect(result).toEqual(expected);
+    });
+
+    test('Insert in the end', () => {
+        const customer1 = {
+                name: 'John Doe',
+                user_id: 1,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer2 = {
+                name: 'Jane Doe',
+                user_id: 2,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer3 = {
+                name: 'Gabriel Costa',
+                user_id: 3,
+                latitude: '1',
+                longitude: '1'
+            },
+            customerList = [customer1, customer2],
+            expected = [customer1, customer2, customer3];
+        let result = app.binaryInsert(customer3, customerList);
+        expect(result).toEqual(expected);
+    });
+
+    test('Insert in the right position for longer lists', () => {
+        const customer1 = {
+                name: 'John Doe',
+                user_id: 1,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer2 = {
+                name: 'Jane Doe',
+                user_id: 2,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer3 = {
+                name: 'Gabriel Costa',
+                user_id: 3,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer4 = {
+                name: 'Mary Who',
+                user_id: 4,
+                latitude: '1',
+                longitude: '1'
+            },
+            customer5 = {
+                name: 'Robert Nill',
+                user_id: 5,
+                latitude: '1',
+                longitude: '1'
+            },
+            customerList = [customer1, customer2, customer3, customer5],
+            expected = [customer1, customer2, customer3, customer4, customer5];
+        let result = app.binaryInsert(customer4, customerList);
+        expect(result).toEqual(expected);
+    });
+});
+
 describe('processLine', () => {
     test('Valid line of near customer', () => {
         const line = '{"latitude": "53.357250", "user_id": 1, "name": "John Doe", "longitude": "-6.251088"}',
